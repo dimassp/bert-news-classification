@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap" rel="stylesheet">
+
+    
+    
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="./css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', path='fonts/icomoon/style.css')}}">
+    
+    <!-- Style -->
+    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+
+    <title>Contact Form #10</title>
+  </head>
+  <body>
+  
+
+  <div class="content">
+    
+    <div class="container">
+      <div class="row align-items-stretch justify-content-center no-gutters">
+        <div class="col-md-7">
+          <div class="form h-100 contact-wrap p-5">
+            <h3 class="text-center">Scrape Berita</h3><br>
+            <h5 class="text-center">Choose Where to Scrape</h5><br>
+            <div class="mb-5">
+              <div class="row justify-content-center">
+                <div class="col-md-5 form-group text-center">
+                  <a href="http://127.0.0.1:8000/scrape-instagram">
+                    <input type="submit" value="Instagram" class="btn btn-block btn-primary rounded-0 py-2 px-4">
+                    <span class="submitting"></span>
+                  </a>
+                </div>
+                <a href="http://127.0.0.1:8000/choose-portal" class="col-md-5 form-group text-center">
+                  <input type="submit" value="News Portal" onclick="scrapeNewsPortal()" class="btn btn-block btn-primary rounded-0 py-2 px-4">
+                  <span class="submitting"></span>
+                </a>
+              </div>
+              <div class="row justify-content-center">
+                <h5 class="text-center">Or</h5>
+              </div>
+              <div class="row justify-content-center">
+                <a href="http://127.0.0.1:8000/classify" class="col-md-5 form-group text-center">
+                  <input type="submit" value="Classify News" onclick="scrapeNewsPortal()" class="btn btn-block btn-primary rounded-0 py-2 px-4">
+                  <span class="submitting"></span>
+                </a>
+              </div>
+
+            </div>
+            <div id="form-message-warning mt-4"></div> 
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    <script>
+    function sendData() {
+      console.log("hello world from function send data")
+      let data = {
+        news : document.getElementById("news").value.replace(/\n/g, '')
+      }
+      $.ajax({
+        type: "POST",
+        url: "http://127.0.0.1:8000/classify",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function (data, status, jqXHR) {
+          document.getElementById("news-topic").innerHTML=  "News Topic: " + data.news_topic;
+        },
+        error: function (jqXHR, status) {
+          // error handler
+          alert("Failed send data")
+        }
+      });
+    }
+    </script>   
+  
+    <!-- <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jquery.validate.min.js"></script>
+    <script src="./js/main.js"></script> -->
+    <script src="{{ url_for('js', path='jquery-3.3.1.min.js')}}"></script>
+    <script src="{{ url_for('js', path='popper.min.js')}}"></script>
+    <script src="{{ url_for('js', path='bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('js', path='jquery.validate.min.js')}}"></script>
+    <script src="{{ url_for('js', path='main.js')}}"></script>
+
+  </body>
+</html>

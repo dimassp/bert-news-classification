@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id-ID" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#" class="no-js">
+
+<head>
+    <title>News Scraper</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', path='css/news_portal_style.css')}}"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/news_portal_style.css">
+
+</head>
+
+<body role="document" class="home page-template-default page page-id-830173 wp-custom-logo">
+    <div class="section-categories post-830173 page type-page status-publish">
+        <div class="container">
+            <div class="text-center">
+                <h2>News Portals</h2>
+                <p>Choose news portal you want to scrape in Jawa Barat</p>
+            </div>
+            <div class="panel panel-default panel-categories">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="in active"><a data-toggle="tab" href="#tab-category"><i class="loker loker-th-list"
+                                    aria-hidden="true"></i>Select News Portal</a>
+
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="tab-category">
+                            <div class="row">
+                                {% for n in news_portal %}
+                                <div class="col-md-4"><a onclick="addElement('{{ n.name }} &nbsp;', '{{  n.id }}')">{{
+                                        n.name }}</a>
+                                </div>
+                                {%endfor%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="portal-added-warning">
+
+            </div>
+            <!-- <div style="height: 10px; color: red;">
+                <h1>Detik Jabar News sudah ditambahkan</h1>
+            </div> -->
+            <div id="div-info">
+                <form id="form-info" name="form-info">
+                    <!-- Start date: <input type="date" name="start-date" id="start-date" required disabled>
+                    End date: <input type="date" name="end-date" id="end-date" required disabled> -->
+                    <!-- <input type="submit" value="Start Scraping" id="submit-info" onclick="kirimForm()" disabled> -->
+                    <!-- <button onclick="kirimForm()" disabled>Start Scrape</button> -->
+                    <input type="submit" value="Start Scraping" id="submit-info" onclick="kirimForm()" disabled>
+                </form>
+            </div>
+
+            <br>
+            <div class="panel panel-default panel-categories" id="added-portal-panel">
+                <!-- <div class="added-portal"> Detik News &nbsp;<i class="fa fa-close" style="font-size:15px;"></i></div> -->
+            </div>
+
+        </div>
+    </div>
+    <script>
+        var portals = [];
+        // var start_date = document.getElementById("start-date");
+        // var end_date = document.getElementById("end-date");
+        var submit_info = document.getElementById("submit-info");
+        function kirimForm() {
+            window.alert('Alert from kirim form button')
+            const date = new Date();
+            var today = ""
+            // window.alert(date.getFullYear() + "-0"+ (date.getMonth()+1)+"-"+ date.getDate());
+            // if (date.getMonth()>=10){
+            //     today = date.getFullYear() + "-"+ (date.getMonth()+1)+"-"+ date.getDate();
+            //     window.alert("today more than 10: "+today);
+            // }
+            // else{
+            //     today = date.getFullYear() + "-0"+ (date.getMonth()+1)+"-"+ date.getDate();
+            //     window.alert("today less than 10: "+today);
+            // }
+            // const start_date = document.getElementById("start-date").value;
+            // const end_date = document.getElementById("end-date").value;
+            // window.alert((document.getElementById("start-date").value > document.getElementById("end-date").value));
+            // window.alert("today: "+today+" "+typeof(today)+ "\n"+
+            // "start date: "+start_date+" "+typeof(start_date)+"\n"+
+            // "end date: "+end_date+" "+typeof(end_date));
+            // window.alert(date);
+            // window.alert((start_date > end_date))
+            // window.alert(end_date > today);
+            // window.alert((start_date > today))
+            // if (end_date == "" || start_date == "") {
+            //     window.alert("Start date and end date can't be empty");
+            // }
+            if (portals.length == 0) {
+                window.alert("Please select at least one portal");
+            }
+            else{
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://127.0.0.1:8000/choose-portal",
+                    data: JSON.stringify({
+                        portal: portals,
+                        // start_date: document.getElementById("start-date").value,
+                        // end_date: document.getElementById("end-date").value
+                    }),
+                    contentType: "application/json",
+                    success: function (data, status, jqXHR) {
+                        window.alert(data.message)
+                    },
+                    error: function (jqXHR, status) {
+                        // error handler
+                        alert("Failed send data")
+                    }
+                });
+            }
+            // else {
+            //     if ((start_date > end_date) || 
+            //     (start_date > today) || 
+            //     (end_date > today)) {
+            //         window.alert("Sorry, but start date cannot be "+
+            //         "either bigger than end date or start date and end date "+
+            //         "cannot be bigger than today's date.")
+            //     }
+            //     else {
+            //         if (portals.length == 0) {
+            //             window.alert("Please select at least one portal");
+            //         }
+            //         else{
+
+            //             $.ajax({
+            //                 type: "POST",
+            //                 url: "http://127.0.0.1:8000/choose-portal",
+            //                 data: JSON.stringify({
+            //                     portal: portals,
+            //                     start_date: document.getElementById("start-date").value,
+            //                     end_date: document.getElementById("end-date").value
+            //                 }),
+            //                 contentType: "application/json",
+            //                 success: function (data, status, jqXHR) {
+            //                     window.alert(data.message)
+            //                 },
+            //                 error: function (jqXHR, status) {
+            //                     // error handler
+            //                     alert("Failed send data")
+            //                 }
+            //             });
+            //         }
+            //     }
+            // }
+        }
+        function addElement(content, value) {
+            window.alert("value: " + value)
+            if (portals.includes(value)) {
+                document.getElementById("portal-added-warning").innerHTML = "Perhatian. " + content + "sudah ditambahkan";
+            }
+            else {
+                // start_date.disabled = false;
+                // end_date.disabled = false;
+                submit_info.disabled = false;
+                var div = document.createElement("div");
+                div.setAttribute("class", "added-portal");
+                div.setAttribute("id", value)
+                div.innerHTML = content;
+                portals.push(value);
+                var close_icon = document.createElement("i");
+                close_icon.setAttribute("class", "fa fa-close");
+                close_icon.setAttribute("onclick", "removeElement(this.parentElement)");
+                document.getElementById("added-portal-panel").appendChild(div);
+                div.appendChild(close_icon);
+            }
+        }
+        function removeElement(element) {
+            document.getElementById("portal-added-warning").innerHTML = "";
+            const index = portals.indexOf(element.id);
+            if (index > -1) {
+                portals.splice(index, 1);
+                element.remove();
+            }
+            if (portals.length != 0) {
+                start_date.disabled = false;
+                end_date.disabled = false;
+                submit_info.disabled = false;
+            }
+            else {
+                start_date.disabled = true;
+                end_date.disabled = true;
+                submit_info.disabled = true;
+            }
+        }
+
+    </script>
+    <script src="{{ url_for('js', path='jquery-3.3.1.min.js')}}"></script>
+    <script src="{{ url_for('js', path='popper.min.js')}}"></script>
+    <script src="{{ url_for('js', path='bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('js', path='jquery.validate.min.js')}}"></script>
+    <script src="{{ url_for('js', path='main.js')}}"></script>
+    </div><!-- .entry-content -->
+    </div><!-- #post-## --></div>
+</body>

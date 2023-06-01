@@ -1,0 +1,43 @@
+<form action="">
+    <div class="card mb-4">
+      <h4>Berita</h4>
+      {{ result.news[0][5] }}
+    </div>
+    <div class="card mb-4">
+      <h5>Tipe Konten</h5>
+      <span>{{ result.news[0][1] }}</span>
+    </div>
+    <div class="card mb-4">
+      <h5>Feedback Tipe Konten</h5>
+      <select name="" id="content-type-feedback">
+      {% if result.news[0][2] is none %}
+        <option value="" selected="selected">--Pilih Tipe Konten--</option>
+      {% else %}
+        <option value="">--Pilih Tipe Konten--</option>
+      {% endif %}
+      {% for content_type in result.content_type %}
+        <option value={{ content_type[0]}} >{{ content_type[0]}}</option>
+      {% endfor %}
+      </select>
+    </div>
+    <div class="card mb-4">
+      <h5>Kategori kejadian</h5>
+      {{ result.news[0][3] }}
+    </div>
+    <div class="card mb-4">
+      <h5>Feedback Kategori kejadian</h5>
+      <select name="" id="event-type-feedback">
+      {% if result.news[0][4] is none %}
+        <option value="" selected="selected">--Pilih Kategori Kejadian--</option>
+      {% else %}
+        <option value="">--Pilih Kategori Kejadian--</option>  
+      {% endif %}
+      {% for event_category in result.event_category %}
+        <option value={{ event_category[0] }}>{{ event_category[0] }}</option>
+      {% endfor %}
+      </select>
+    </div>
+    <button type="submit" id="save-changes" onsubmit="save_changes('{{ result.news[0][0] }}')">
+      Save changes
+    </button>
+  </form>
